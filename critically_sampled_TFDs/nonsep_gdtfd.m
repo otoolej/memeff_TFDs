@@ -16,7 +16,7 @@
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-04-23 16:45:04 (otoolej)>
+% last update: Time-stamp: <2014-05-02 18:54:48 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=nonsep_gdtfd(x,kern_type,kern_params)
 if(nargin<2 || isempty(kern_type)), kern_type='cw'; end
@@ -25,8 +25,8 @@ if(nargin<3 || isempty(kern_params)), kern_params=10; end
 
 DBplot=0;
 DBmem=1;
-DBcompare=1;
-DBtest=1;
+DBcompare=0;
+DBtest=0;
 DBtime=1;
 
 

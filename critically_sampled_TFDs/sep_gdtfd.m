@@ -17,17 +17,17 @@
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-04-22 11:54:45 (otoolej)>
+% last update: Time-stamp: <2014-05-03 02:03:24 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=sep_gdtfd(x,dopp_win_params,lag_win_params,Ntime,Nfreq)
 if(nargin<4 || isempty(Ntime)), Ntime=[]; end
 if(nargin<5 || isempty(Nfreq)), Nfreq=[]; end
 
-DBplot=1;
+DBplot=0;
 DBmem=1;
 DBcompare=0;
-DBtest=1;
-DBtime=0;
+DBtest=0;
+DBtime=1;
 
 if(DBtime), time_start=tic; end
 %---------------------------------------------------------------------
@@ -142,6 +142,8 @@ tfd=tfd.*scale_factor;
 %---------------------------------------------------------------------
 % END; testing and plotting
 %---------------------------------------------------------------------
+if(DBtime),  dispVars( toc(time_start) ); end
+
 if(DBtest) % && Ntime==N && Nfreq==N)
     if(DBtime)
         dispVars( toc(time_start) );

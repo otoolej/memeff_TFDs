@@ -1,5 +1,7 @@
 %-------------------------------------------------------------------------------
-% dec_nonsep_gdtfd: decimated TFD with non-separable kernel
+% dec_nonsep_gdtfd: decimated TFD with non-separable kernel ρ[an,bk], where a,b are
+% integer values
+% 
 %
 % Syntax: tfd=dec_nonsep_gdtfd(x,kern_type,kern_params)
 %
@@ -16,7 +18,7 @@
 % John M. O' Toole, University College Cork
 % Started: 23-04-2014
 %
-% last update: Time-stamp: <2014-04-24 15:57:43 (otoolej)>
+% last update: Time-stamp: <2014-05-01 13:20:22 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_nonsep_gdtfd(x,kern_type,kern_params,time_dec,freq_dec)
 if(nargin<2 || isempty(kern_type)),   kern_type='cw'; end
@@ -119,6 +121,7 @@ for n=0:2:(L-2)
     tfd(n+1,1:J)=real(tfd_time_slice);
     tfd(n+2,1:J)=imag(tfd_time_slice);
 end
+
 
 % one extra FFT if L is odd:
 if(rem(L,2))

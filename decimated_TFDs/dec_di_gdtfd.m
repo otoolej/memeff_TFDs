@@ -1,5 +1,6 @@
 %-------------------------------------------------------------------------------
-% dec_di_gdtfd: decimated Doppler-independent kernel TFD
+% dec_di_gdtfd: decimated Doppler-independent kernel TFD ρ[nᵢ,bk], where b is an
+% integer value and nᵢ is the set nᵢ ={ nᵢ | 1≤i≤U }, with 0≤nᵢ≤N-1
 %
 % Syntax: tfd=dec_di_gdtfd(x,lag_win_params,time_dec,freq_dec,Nfreq)
 %
@@ -16,7 +17,7 @@
 % John M. O' Toole, University College Cork
 % Started: 23-04-2014
 %
-% last update: Time-stamp: <2014-04-24 11:17:12 (otoolej)>
+% last update: Time-stamp: <2014-05-01 14:37:12 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_di_gdtfd(x,lag_win_params,time_dec,freq_dec,Nfreq)
 if(nargin<2 || isempty(lag_win_params)), lag_win_params={101,'hamm'}; end

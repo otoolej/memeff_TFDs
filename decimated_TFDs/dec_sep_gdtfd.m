@@ -2,6 +2,8 @@
 % dec_sep_gdtfd: Decimated TFD with separable kernel of the form g[l,m]=G1[l]g2[m]. For
 % efficient implement define windows G1[l] and g2[m] as band-limited functions.
 %
+% TFD is decimated with integer factors a,b as ρ[an,bk]
+%
 % Syntax: tfd=dec_sep_gdtfd(x,dopp_win_params,lag_win_params,time_dec,freq_dec,Ntime,Nfreq)
 %
 % Inputs: 
@@ -17,7 +19,7 @@
 % John M. O' Toole, University College Cork
 % Started: 24-04-2014
 %
-% last update: Time-stamp: <2014-04-24 22:25:40 (otoolej)>
+% last update: Time-stamp: <2014-05-01 14:38:01 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_sep_gdtfd(x,dopp_win_params,lag_win_params,time_dec,freq_dec,Ntime, ...
                            Nfreq)

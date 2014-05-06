@@ -16,18 +16,18 @@
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-04-22 11:50:56 (otoolej)>
+% last update: Time-stamp: <2014-05-02 15:42:43 (otoolej)>
 %-------------------------------------------------------------------------------
 function [tfd,G1]=li_gdtfd(x,dopp_win_params,Ntime)
 if(nargin<2 || isempty(dopp_win_params)), dopp_win_params={11,'hamm',0,1}; end
 if(nargin<3 || isempty(Ntime)), Ntime=[]; end
 
 
-DBplot=1;
+DBplot=0;
 DBmem=1;
 DBcompare=0;
-DBtest=1;
-DBtime=1;
+DBtest=0;
+DBtime=0;
 
 if(DBtime), time_start=tic; end
 %---------------------------------------------------------------------

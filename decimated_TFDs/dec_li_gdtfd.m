@@ -1,5 +1,6 @@
 %-------------------------------------------------------------------------------
-% dec_li_gdtfd: decimated lag-independent kernel TFD
+% dec_li_gdtfd: decimated lag-independent kernel TFD ρ[an,kᵢ], where a is an integer
+% value and kᵢ is the set kᵢ ={ kᵢ | 1≤i≤V }, with 0≤kᵢ≤N-1
 %
 % Syntax: tfd=dec_li_gdtfd(x,dopp_win_params,time_dec,freq_dec,Ntime)
 %
@@ -16,7 +17,7 @@
 % John M. O' Toole, University College Cork
 % Started: 23-04-2014
 %
-% last update: Time-stamp: <2014-04-24 11:29:53 (otoolej)>
+% last update: Time-stamp: <2014-05-01 14:35:22 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_li_gdtfd(x,dopp_win_params,time_dec,freq_dec,Ntime)
 if(nargin<2 || isempty(dopp_win_params)), dopp_win_params={51,'hann'}; end

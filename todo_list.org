@@ -5,8 +5,9 @@
 * known bugs [0/1]
   + [ ] product-kernel not working
 
-* major improvements [0/1]
+* major improvements [0/2]
   + [ ] current assumes that signal length is even; implement for odd-values too;
+  + [ ] write README file
 
 * minor improvements [0/1]
  + [ ] edit ‘gen_Doppler_lag_kern.m’ so can generate kernel vector of lag indices

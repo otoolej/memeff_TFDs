@@ -25,11 +25,11 @@
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-04-14 14:18:22 (otoolej)>
+% last update: Time-stamp: <2014-05-06 15:01:29 (otoolej)>
 %-------------------------------------------------------------------------------
 function [z,N2,N,Nh]=get_analytic_signal(z)
 if(isreal(z)) 
-  z=get_analytic(z); 
+  z=gen_analytic(z); 
 end
 N2=length(z); N=N2/2; Nh=ceil(N/2);
 
@@ -39,7 +39,7 @@ end
 
 
 
-function gen_analytic(s1)
+function z=gen_analytic(s1)
 %---------------------------------------------------------------------
 % generate the analytic signal (with zero-padding in the time-direction)
 %---------------------------------------------------------------------
