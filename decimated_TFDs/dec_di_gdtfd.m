@@ -5,19 +5,40 @@
 % Syntax: tfd=dec_di_gdtfd(x,lag_win_params,time_dec,freq_dec,Nfreq)
 %
 % Inputs: 
-%     x,lag_win_params,time_dec,freq_dec,Nfreq - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      lag_win_params = lag window parameters in cell form:
+%                 {win_length,win_type,win_param,lag_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] lag_or_not is either 0 (define window in the lag
+%                     domain, which is the default) or 0 (define window the frequency domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      time_dec = decimation factor a in the time domain; a/Ntime is integer
+%      freq_dec = decimation factor b in the frequency domain; b/Nfreq is integer
+%
+%      Nfreq = frequency oversampling value; must be greater than length of lag window
+%
+% See also: DI_GDTFD, GET_ANALYTIC_SIGNAL, GEN_LAG_KERN, FFT
 %
 % Outputs: 
-%     tfd - 
+%     tfd = U x (b/Nfreq) time–frequency distribution
 %
 % Example:
+%     N=1024; Nfreq=128; ni=[100:4:900]; b=2;
+%     x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
 %     
-%
+%     c=dec_di_gdtfd(x,{101,'hann'},ni,b,Nfreq);
+%     vtfd(c,x,1,ni);
+
 
 % John M. O' Toole, University College Cork
 % Started: 23-04-2014
 %
-% last update: Time-stamp: <2014-05-01 14:37:12 (otoolej)>
+% last update: Time-stamp: <2014-07-23 16:22:59 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_di_gdtfd(x,lag_win_params,time_dec,freq_dec,Nfreq)
 if(nargin<2 || isempty(lag_win_params)), lag_win_params={101,'hamm'}; end
@@ -25,11 +46,11 @@ if(nargin<3 || isempty(time_dec)), time_dec=[]; end
 if(nargin<4 || isempty(freq_dec)), freq_dec=1; end
 if(nargin<5 || isempty(Nfreq)), Nfreq=[]; end
 
-DBplot=1;
-DBmem=1;
-DBtest=1;
+DBplot=0;
+DBmem=0;
+DBtest=0;
 DBtime=0;
-DBverbose=1;
+DBverbose=0;
 
 
 if(DBtime), time_start=tic; end
@@ -63,7 +84,7 @@ if(J~=Nfreq)
 else
     m_real=1:Ph; m_imag=(J-Ph+1):J;
 end
-dispVars(length(m_real),length(m_imag),m_real(end),m_imag(1));
+
 
 
 m=0:(Ph-1); mb=1:(Ph-1);

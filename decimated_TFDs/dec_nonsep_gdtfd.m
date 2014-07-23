@@ -3,22 +3,54 @@
 % integer values
 % 
 %
-% Syntax: tfd=dec_nonsep_gdtfd(x,kern_type,kern_params)
+% Syntax: tfd=dec_nonsep_gdtfd(x,kern_type,kern_params,time_dec,freq_dec)
 %
 % Inputs: 
-%     x,kern_type,kern_params - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      kern_type = { 'wvd' | 'swvd' | 'pwvd' | 'sep' | 'cw' | 'mb' }
+%            wvd  - Wigner-Ville distribution
+%            swvd - Smoothed Wigner-Ville distribution
+%                   (lag-independent kernel)
+%            pwvd - Pseudo Wigner-Ville distribution
+%                   (Doppler-independent kernel)
+%            sep  - Separable-kernel distribution 
+%                   (combintation of SWVD and PWVD)
+%            mb   - Modified-B distribution
+%            cw   - Choi-Williams distribution
+% 
+%      kern_params = cell of kernel parameters:
+%            wvd  - {}
+%            swvd - {win_length,win_type,[win_param]}
+%                   e.g. {11,'hamm'}
+%            pwvd - {win_length,win_type,[win_param]}
+%                   e.g. {200,'cosh',0.1}
+%            sep  - { {win1_length,win1_type,[win1_param]}, 
+%                    {win2_length,win2_type,[win2_param]} }
+%                   where win1 is the doppler window and win2 is the 
+%                   lag window, e.g. { {11,'hamm'}, {200,'cosh',0.1} }
+%            mb   - {beta_parameter} in the range 1<beta<0
+%            cw   - {sigma_parameter}
+%
+%     time_dec  = decimation factor a in the time domain; a/N is integer
+%     freq_dec  = decimation factor b in the frequency domain; b/N is integer
 %
 % Outputs: 
-%     tfd - 
+%     tfd = a/N x b/N time–frequency distribution
+%
+% See also: NONSEP_GDTFD, GET_ANALYTIC_SIGNAL, GEN_DOPPLER_LAG_KERN, FFT
 %
 % Example:
-%     
-%
+%      N=1024; a=2; b=8;
+%      x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
+%      c=dec_nonsep_gdtfd(x,'cw',{100},a,b); 
+%      vtfd(c,x);
 
 % John M. O' Toole, University College Cork
 % Started: 23-04-2014
 %
-% last update: Time-stamp: <2014-05-01 13:20:22 (otoolej)>
+% last update: Time-stamp: <2014-07-23 15:25:45 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_nonsep_gdtfd(x,kern_type,kern_params,time_dec,freq_dec)
 if(nargin<2 || isempty(kern_type)),   kern_type='cw'; end
@@ -27,11 +59,11 @@ if(nargin<4 || isempty(time_dec)),    time_dec=1; end
 if(nargin<5 || isempty(freq_dec)),    freq_dec=1; end
 
 
-DBplot=1;
-DBmem=1;
-DBtest=1;
+DBplot=0;
+DBmem=0;
+DBtest=0;
 DBtime=0;
-DBverbose=1;
+DBverbose=0;
 
 
 if(DBtime), time_start=tic; end
@@ -72,7 +104,7 @@ for m=0:Jh
     for p=0:freq_dec-1
         mmod=(p*J+m);
         g_lag_slice=gen_Doppler_lag_kern(kern_type,kern_params,N,mmod+1);
-
+        
         if(mmod<=Nh)
             inp=mod(n+mmod,N2); inn=mod(n-mmod,N2);
             K_lag_slice=z(inp+1).*conj(z(inn+1));
@@ -143,8 +175,8 @@ if(DBmem), s=whos; fprintf('end: mem=%s\n',disp_bytes(sum([s.bytes]))); end
 scale_factor=1/N;
 tfd=tfd.*scale_factor;
 
-
 if(DBtime), dispVars( toc(time_start) ); end
+
 
 %---------------------------------------------------------------------
 % END; testing and plotting

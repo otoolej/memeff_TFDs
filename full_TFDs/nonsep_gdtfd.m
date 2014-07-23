@@ -4,19 +4,50 @@
 % Syntax: [tfd,g]=nonsep_gdtfd(x,kern_type,kern_params)
 %
 % Inputs: 
-%     x,kern_type,kern_params - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      kern_type = { 'wvd' | 'swvd' | 'pwvd' | 'sep' | 'cw' | 'mb' }
+%            wvd  - Wigner-Ville distribution
+%            swvd - Smoothed Wigner-Ville distribution
+%                   (lag-independent kernel)
+%            pwvd - Pseudo Wigner-Ville distribution
+%                   (Doppler-independent kernel)
+%            sep  - Separable-kernel distribution 
+%                   (combintation of SWVD and PWVD)
+%            mb   - Modified-B distribution
+%            cw   - Choi-Williams distribution
+% 
+%      kern_params = cell of kernel parameters:
+%            wvd  - {}
+%            swvd - {win_length,win_type,[win_param]}
+%                   e.g. {11,'hamm'}
+%            pwvd - {win_length,win_type,[win_param]}
+%                   e.g. {200,'cosh',0.1
+%            sep  - { {win1_length,win1_type,[win1_param]}, 
+%                    {win2_length,win2_type,[win2_param]}
+%                   where win1 is the doppler window and win2 is the 
+%                   lag window, e.g. { {11,'hamm'}, {200,'cosh',0.1} }
+%            mb   - {beta_parameter} in the range 1<beta<0
+%            cw   - {sigma_parameter}
 %
 % Outputs: 
-%     tfd - 
+%     tfd = N x N time-frequency distribution
+%
+% See also: DEC_NONSEP_GDTFD, GET_ANALYTIC_SIGNAL, GEN_DOPPLER_LAG_KERN, FFT
 %
 % Example:
-%     
+%      N=128; 
+%      x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
 %
+%      c=nonsep_gdtfd(x,'cw',{100}); 
+%      vtfd(c,x);
+
 
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-05-02 18:54:48 (otoolej)>
+% last update: Time-stamp: <2014-07-23 15:25:04 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=nonsep_gdtfd(x,kern_type,kern_params)
 if(nargin<2 || isempty(kern_type)), kern_type='cw'; end
@@ -24,10 +55,10 @@ if(nargin<3 || isempty(kern_params)), kern_params=10; end
 
 
 DBplot=0;
-DBmem=1;
+DBmem=0;
 DBcompare=0;
 DBtest=0;
-DBtime=1;
+DBtime=0;
 
 
 if(DBtime), time_start=tic; end

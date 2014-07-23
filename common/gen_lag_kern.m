@@ -5,7 +5,7 @@
 % Syntax: [g2,P,Ph_floor,Nfreq]=gen_lag_kern(win_params,N,Nfreq)
 %
 %
-%  INPUT:
+%  Input:
 %       win_params - cell of {win_length,win_type,[win_param],[lag_or_freq]}
 %                     e.g. {11,'hamm',0,1}
 %                     the parameter lag_or_freq is either:
@@ -14,20 +14,22 @@
 %       N          - lenght of signal
 %       Nfreq      - number of sample points in the frequency direction
 %
-%  OUTPUT:
+%  Output:
 %       g2       - lag kernel g_2(2mT)
 %       P        - length of g2 (as may have changed)
 %       Ph_floor - floor(P/2)
 %       Nfreq    - Nfreq (as may have changed)
 %
-%  EXAMPLE:
+%  See also: GEN_DOPPLER_KERN, GEN_DOPPLER_LAG_KERN, GET_WINDOW, PADWIN
+%
+%  Example:
 %       g2=get_lag_kernel({61,'hann'},128,512);
 %
 
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-04-22 11:24:28 (otoolej)>
+% last update: Time-stamp: <2014-07-23 13:04:21 (otoolej)>
 %-------------------------------------------------------------------------------
 function [g2,P,Ph_floor,Nfreq]=gen_lag_kern(win_params,N,Nfreq)
 if(nargin<3 || isempty(Nfreq)), Nfreq=[]; end

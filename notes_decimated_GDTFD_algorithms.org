@@ -21,19 +21,21 @@
 | DI                        | U/2       × FFT-Jfreq         | UJfreq/2 log₂ Jfreq          | U × Jfreq                   | ρ[nᵢ,bk] |
 | DI (when U is odd)        | (U/2 +1)  × FFT-Jfreq         |                              |                             |          |
 | separable                 | Jfreq/2 × (FFT-N + FFT-Ltime) | JfreqN/2 log₂N               | Ltime × Jfreq               | ρ[an,bn] |
-|                           |   + Ltime/2 × FFT-Jfreq       | + LtimeJfreq log₂ LtimeJfreq |                             |          |
+|                           | + Ltime/2 × FFT-Jfreq         | + LtimeJfreq log₂ LtimeJfreq |                             |          |
 | separable (when L is odd) | Jfreq/2 × (FFT-N + FFT-Ltime) |                              | Ltime × Jfreq               | ρ[an,bn] |
-|                           |   + (Ltime/2 +1) × FFT-Jfreq  |                              |                             |          |
+|                           | + (Ltime/2 +1) × FFT-Jfreq    |                              |                             |          |
 
 
 ** notation
-
-| U     | length of sequence nᵢ {nᵢ for 1<=i<=U}, U<=N and 0<=nᵢ<=N-1 |
-| V     | length of sequence kᵢ {kᵢ for 1<=i<=V}, V<=N and 0<=kᵢ<=N-1 |
-| J     | N/b, b is decimation integer in frequency direction         |
-| L     | N/a, a is decimation integer in time direction              |
-| Jfreq | Nfreq/b, b is decimation integer in frequency direction     |
-| Ltime | Ntime/a, a is decimation integer in time direction          |
+| symbol | explanation                                                 |
+|--------+-------------------------------------------------------------|
+| N      | length of signal                                            |
+| U      | length of sequence nᵢ {nᵢ for 1<=i<=U}, U<=N and 0<=nᵢ<=N-1 |
+| V      | length of sequence kᵢ {kᵢ for 1<=i<=V}, V<=N and 0<=kᵢ<=N-1 |
+| J      | N/b, b is decimation integer in frequency direction         |
+| L      | N/a, a is decimation integer in time direction              |
+| Jfreq  | Nfreq/b, b is decimation integer in frequency direction     |
+| Ltime  | Ntime/a, a is decimation integer in time direction          |
 
 
 
@@ -51,7 +53,6 @@
 |---------------+------------------------------+-----------------------------+----------|
 | non-separable | N²/2 log₂ N + LJ/2 log₂ J    | L × J                       | ρ[an,bn] |
 | LI            | VLtime/2 log₂ Ltime          | Ltime × V                   | ρ[an,kᵢ] |
-| LI            |                              |                             |          |
 | DI            | UJfreq/2 log₂ Jfreq          | U × Jfreq                   | ρ[nᵢ,bk] |
 | separable     | JfreqN/2 log₂N               | Ltime × Jfreq               | ρ[an,bn] |
 |               | + LtimeJfreq log₂ LtimeJfreq |                             |          |

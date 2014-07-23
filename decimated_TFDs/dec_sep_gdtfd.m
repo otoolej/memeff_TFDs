@@ -7,19 +7,49 @@
 % Syntax: tfd=dec_sep_gdtfd(x,dopp_win_params,lag_win_params,time_dec,freq_dec,Ntime,Nfreq)
 %
 % Inputs: 
-%     x,dopp_win_params,lag_win_params,time_dec,freq_dec,Ntime,Nfreq - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      dopp_win_params = Doppler window parameters in cell form:
+%                 {win_length,win_type,win_param,Doppler_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] Doppler_or_not is either 1 (define window in the Doppler
+%                     domain, which is the default) or 0 (define window in the time domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      lag_win_params = lag window parameters in cell form:
+%                 {win_length,win_type,win_param,lag_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] lag_or_not is either 0 (define window in the lag
+%                     domain, which is the default) or 1 (define window the frequency domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      time_dec  = decimation factor a in the time domain; a/Ntime is integer
+%      freq_dec  = decimation factor b in the frequency domain; b/Nfreq is integer
+%
+%      Nfreq = frequency oversampling value; must be greater than length of lag window
+%      Ntime = time oversampling value; must be greater than length of Doppler window
 %
 % Outputs: 
-%     tfd - 
+%     tfd = (a/Ntime) x (b/Nfreq) time–frequency distribution
+%
+% See also: SEP_GDTFD, GET_ANALYTIC_SIGNAL, GEN_LAG_KERN, GEN_DOPPLER_KERN, FFT
 %
 % Example:
-%     
+%     N=1024; Ntime=64; Nfreq=128; a=1; b=2;
+%     x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
 %
+%     c=dec_sep_gdtfd(x,{51,'hann'},{101,'hann'},a,b,Ntime,Nfreq);
+%     vtfd(c,x);
 
 % John M. O' Toole, University College Cork
 % Started: 24-04-2014
 %
-% last update: Time-stamp: <2014-05-01 14:38:01 (otoolej)>
+% last update: Time-stamp: <2014-07-23 15:25:51 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_sep_gdtfd(x,dopp_win_params,lag_win_params,time_dec,freq_dec,Ntime, ...
                            Nfreq)
@@ -30,12 +60,11 @@ if(nargin<5 || isempty(freq_dec)), freq_dec=1; end
 if(nargin<6 || isempty(Ntime)), Ntime=[]; end
 if(nargin<7 || isempty(Nfreq)), Nfreq=[]; end
 
-
-DBplot=1;
-DBmem=1;
-DBtest=1;
-DBtime=1;
-DBverbose=1;
+DBplot=0;
+DBmem=0;
+DBtest=0;
+DBtime=0;
+DBverbose=0;
 
 
 if(DBtime), time_start=tic; end
@@ -91,19 +120,18 @@ for m=0:Jh
     for p=0:freq_dec-1
         mmod=p.*J+m;
         
-        if(mmod<=Nh)
+        if(mmod<=Ph)
             inp=mod(n+mmod,N2);  inn=mod(n-mmod,N2);           
             i1=mod(n+mmod,N2); i2=mod(n-mmod,N2);
-            if(mmod<Ph)
-                R_lag_slice=R_lag_slice+z(inp+1).*conj(z(inn+1)).*g2(mmod+1);
-            end
-        else
+
+            R_lag_slice=R_lag_slice+z(inp+1).*conj(z(inn+1)).*g2(mmod+1);
+        elseif(mmod>Nfreq-Ph)
             inp=mod(n+Nfreq-mmod,N2); inn=mod(n-Nfreq+mmod,N2);
-            if(Nfreq-mmod<Ph)
-                R_lag_slice=R_lag_slice+conj(z(inp+1)).*z(inn+1).*g2(P-Nfreq+mmod+1);
-            end
+            
+            R_lag_slice=R_lag_slice+conj(z(inp+1)).*z(inn+1).*g2(P-Nfreq+mmod+1);
         end
     end
+    
 
     %-------------------------------------------------------------------------
     % b) DFT to the Doppler--lag domain..
@@ -120,7 +148,7 @@ for m=0:Jh
     %-------------------------------------------------------------------------
     % d) Fold in the Doppler direction
     %-------------------------------------------------------------------------
-    r_lag_fold=fold_sig_full(r_lag_slice,L,time_dec);
+    r_lag_fold=fold_vector_full(r_lag_slice,L,time_dec);
   
     %-------------------------------------------------------------------------
     % e) DFT the lag slice to the time--lag domain
@@ -202,12 +230,12 @@ if(DBplot)
     figure(1); clf; 
     vtfd(tfd,real(x(1:N)));
     
-    figure(9); clf; hold all;
-    subplot(211); hold all; plot(sum(tfd')'); plot( abs(z(1:N)).^2 );
-    subplot(212); hold all; plot(sum(tfd')' - abs(z(n_seq+1)).^2 );    
-    
-    figure(10); clf; hold all;
-    Z=fft(z);
-    subplot(211); hold all; plot(sum(tfd)); plot( abs(Z(1:N)).^2./(2*N) );
-    subplot(212); hold all; plot(sum(tfd)' - abs(Z(k_seq+1)).^2./(2*N) );    
+% $$$     figure(9); clf; hold all;
+% $$$     subplot(211); hold all; plot(sum(tfd')'); plot( abs(z(1:N)).^2 );
+% $$$     subplot(212); hold all; plot(sum(tfd')' - abs(z(n_seq+1)).^2 );    
+% $$$     
+% $$$     figure(10); clf; hold all;
+% $$$     Z=fft(z);
+% $$$     subplot(211); hold all; plot(sum(tfd)); plot( abs(Z(1:N)).^2./(2*N) );
+% $$$     subplot(212); hold all; plot(sum(tfd)' - abs(Z(k_seq+1)).^2./(2*N) );    
 end

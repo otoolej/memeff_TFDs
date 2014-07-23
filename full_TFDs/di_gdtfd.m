@@ -1,33 +1,50 @@
 %-------------------------------------------------------------------------------
-% di_gdtfd: TFD with Doppler-independent (DI) kernel
-%           g[l,m]=g₂[m]
+% di_gdtfd: TFD with Doppler-independent (DI) kernel g[l,m]=g₂[m]
 %
 % Syntax: tfd=di_gdtfd(x,lag_win_params,Nfreq)
 %
 % Inputs: 
-%     x,lag_win_params,Nfreq - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      lag_win_params = lag window parameters in cell form:
+%                 {win_length,win_type,win_param,lag_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] lag_or_not is either 0 (define window in the lag
+%                     domain, which is the default) or 0 (define window the frequency domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      Nfreq = frequency oversampling value; must be greater than length of lag window
 %
 % Outputs: 
-%     tfd - 
+%      tfd = N x Nfreq time-frequency distribution
+%
+% See also: DEC_DI_GDTFD, GET_ANALYTIC_SIGNAL, GEN_LAG_KERN, FFT
 %
 % Example:
-%     
+%      N=512; Ntime=256; Nfreq=256;
+%      x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
 %
+%      c=di_gdtfd(x,{51,'hann'},Nfreq); 
+%      vtfd(c,x);
 
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-04-22 11:53:26 (otoolej)>
+% last update: Time-stamp: <2014-07-23 16:31:30 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=di_gdtfd(x,lag_win_params,Nfreq)
 if(nargin<2 || isempty(lag_win_params)), lag_win_params={101,'hamm'}; end
 if(nargin<3 || isempty(Nfreq)), Nfreq=[]; end
 
 
-DBplot=1;
-DBmem=1;
+DBplot=0;
+DBmem=0;
 DBcompare=0;
-DBtest=1;
+DBtest=0;
+DBtime=0;
 
 
 if(DBtime), time_start=tic; end
@@ -47,7 +64,6 @@ Ph=ceil(P/2);
 if(DBmem), s=whos; fprintf('start: mem=%s\n',disp_bytes(sum([s.bytes]))); end
 tfd=zeros(N,Nfreq); 
 m_real=1:Ph; m_imag=(Nfreq-Ph+1):Nfreq;
-dispVars(length(m_real),length(m_imag),m_imag(1));
 
 m=0:(Ph-1);
 for n=0:N-1

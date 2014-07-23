@@ -3,7 +3,7 @@
 %
 % Syntax: [G1,Q,Qh_floor,Ntime]=gen_Doppler_kern(win_params,N,Ntime)
 %
-%  INPUT:
+%  Input:
 %       win_params - cell of {win_length,win_type,[win_param],[Doppler_or_time]}
 %                     e.g. {11,'hamm',0,1}
 %                     the parameter 'Doppler_or_time' is either:
@@ -12,12 +12,14 @@
 %       N          - length of signal
 %       Ntime      - number of sample points in the time direction
 %
-%  OUTPUT:
+%  Ouput:
 %       G1           - Doppler function G_1(1/(QT))
 %       Q            - length of G1
 %       Ntime        - returns Ntime as it may be adjusted from input
-%       
-% EXAMPLE:
+%
+%  See also: GEN_LAG_KERN, GEN_DOPPLER_LAG_KERN, GET_WINDOW, PADWIN
+%
+%  Example:
 %       G1=gen_Doppler_kern({111,'cosh',0.1,1},128,512);
 %       plot(real(G1));
 %
@@ -32,7 +34,7 @@
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-04-22 11:37:49 (otoolej)>
+% last update: Time-stamp: <2014-07-23 13:01:48 (otoolej)>
 %-------------------------------------------------------------------------------
 function [G1,Q,Ntime,G1_pad]=gen_Doppler_kern(win_params,N,Ntime)
 if(nargin<3 || isempty(Ntime)), Ntime=[]; end

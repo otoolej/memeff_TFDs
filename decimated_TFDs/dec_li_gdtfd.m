@@ -5,19 +5,39 @@
 % Syntax: tfd=dec_li_gdtfd(x,dopp_win_params,time_dec,freq_dec,Ntime)
 %
 % Inputs: 
-%     x,dopp_win_params,time_dec,freq_dec,Ntime - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      dopp_win_params = Doppler window parameters in cell form:
+%                 {win_length,win_type,win_param,Doppler_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] Doppler_or_not is either 1 (define window in the Doppler
+%                     domain, which is the default) or 0 (define window in the time domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      time_dec  = decimation factor a in the time domain; a/Ntime is integer
+%      freq_dec  = decimation factor b in the frequency domain; b/Nfreq is integer
+%
+%      Ntime = time oversampling value; must be greater than length of Doppler window
 %
 % Outputs: 
-%     tfd - 
+%     tfd = (a/Ntime) x V time–frequency distribution
+%
+% See also: LI_GDTFD, GET_ANALYTIC_SIGNAL, GEN_DOPPLER_KERN, FFT
 %
 % Example:
-%     
+%     N=1024; Ntime=64; a=2; ki=[150:4:850]; 
+%     x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
 %
+%     c=dec_li_gdtfd(x,{51,'hann'},a,ki,Ntime); 
+%     vtfd(c,x,1,[],ki./(N*2));
 
 % John M. O' Toole, University College Cork
 % Started: 23-04-2014
 %
-% last update: Time-stamp: <2014-05-01 14:35:22 (otoolej)>
+% last update: Time-stamp: <2014-07-23 16:19:59 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_li_gdtfd(x,dopp_win_params,time_dec,freq_dec,Ntime)
 if(nargin<2 || isempty(dopp_win_params)), dopp_win_params={51,'hann'}; end
@@ -26,11 +46,11 @@ if(nargin<4 || isempty(freq_dec)), freq_dec=1; end
 if(nargin<5 || isempty(Ntime)), Ntime=[]; end
 
 
-DBplot=1;
-DBmem=1;
-DBtest=1;
-DBtime=1;
-DBverbose=1;
+DBplot=0;
+DBmem=0;
+DBtest=0;
+DBtime=0;
+DBverbose=0;
 
 
 if(DBtime), time_start=tic; end
@@ -63,7 +83,6 @@ if(L~=Ntime)
 else
     l_real=1:Qh; l_imag=(L-Qh+1):L;
 end
-dispVars(length(l_real),length(l_imag),l_real(end),l_imag(1));
 
 
 Z=fft(z);

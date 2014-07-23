@@ -1,13 +1,34 @@
 %-------------------------------------------------------------------------------
-% li_gdtfd: TFD with lag-independent (LI) kernel g[l,m]=G1[l]
+% li_gdtfd: TFD with lag-independent (LI) kernel g[l,m]=G₁[l] 
 %
 % Syntax: tfd=li_gdtfd(x,dopp_win_params,Ntime)
 %
 % Inputs: 
-%     x,dopp_win_params,Ntime - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      dopp_win_params = Doppler window parameters in cell form:
+%                 {win_length,win_type,win_param,Doppler_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] Doppler_or_not is either 1 (define window in the Doppler
+%                     domain, which is the default) or 0 (define window the time domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      Ntime = time oversampling value; must be greater than length of Doppler window
 %
 % Outputs: 
-%     tfd - 
+%      tfd = Ntime x N time-frequency distribution
+%
+% See also: DEC_LI_GDTFD, GET_ANALYTIC_SIGNAL, GEN_DOPPLER_KERN, FFT
+%
+% Example:
+%      N=10000; Ntime=256; 
+%      x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
+%
+%      c=li_gdtfd(x,{51,'hamm'},Ntime); 
+%      vtfd(c,x);
 %
 % Example:
 %     
@@ -16,7 +37,7 @@
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-05-02 15:42:43 (otoolej)>
+% last update: Time-stamp: <2014-07-23 15:28:16 (otoolej)>
 %-------------------------------------------------------------------------------
 function [tfd,G1]=li_gdtfd(x,dopp_win_params,Ntime)
 if(nargin<2 || isempty(dopp_win_params)), dopp_win_params={11,'hamm',0,1}; end
@@ -24,7 +45,7 @@ if(nargin<3 || isempty(Ntime)), Ntime=[]; end
 
 
 DBplot=0;
-DBmem=1;
+DBmem=0;
 DBcompare=0;
 DBtest=0;
 DBtime=0;
@@ -48,7 +69,7 @@ Z=fft(z);
 if(DBmem), s=whos; fprintf('start: mem=%s\n',disp_bytes(sum([s.bytes]))); end
 tfd=zeros(Ntime,N); 
 l_real=1:Qh; l_imag=(Ntime-Qh+1):Ntime;
-dispVars(length(l_real),length(l_imag),l_imag(1));
+
 
 l=0:(Qh-1);
 for k=0:N-1

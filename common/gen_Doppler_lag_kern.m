@@ -3,8 +3,7 @@
 %
 % Syntax: kern=gen_Doppler_lag_kern(kern_type,kern_params,N)
 %
-% INPUT: 
-%
+% Input: 
 %   kern_type = { 'wvd' | 'swvd' | 'pwvd' | 'sep' | 'cw' | 'mb'}
 %            wvd  - kernel for Wigner-Ville distribution
 %            swvd - kernel for smoothed Wigner-Ville distribution
@@ -33,11 +32,12 @@
 %
 %   N = signal length.
 %
-% OUTPUT:
+% Output:
 %   g = Doppler--lag smoothing kernel
 %
+% See also: GEN_LAG_KERN, GEN_DOPPLER_KERN, GET_WINDOW, PADWIN
 %
-% EXAMPLE
+% Example:
 %      N=128; 
 %      g=gen_Doppler_lag_kern( 'sep',{{N-1,'cosh',0.1,1},{51,'hamm'}},N); 
 %      clf; mesh( fftshift(g) );
@@ -48,7 +48,7 @@
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-04-16 18:40:20 (otoolej)>
+% last update: Time-stamp: <2014-07-23 13:02:20 (otoolej)>
 %-------------------------------------------------------------------------------
 function g=gen_Doppler_lag_kern(kern_type,kern_params,N,lag_index,G1)
 if(nargin<3), error('need 3 input arguments'); end

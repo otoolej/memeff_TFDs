@@ -1,33 +1,61 @@
 %-------------------------------------------------------------------------------
 % sep_gdtfd: Time--frequency distribution (quadratic class) with separable kernel of
-% the form g[l,m]=G1[l]g2[m]
+% the form g[l,m]=G₁[l]g₂[m]
 %
 % Syntax: tfd=sep_gdtfd(x,dopp_win_params,lag_win_params,Ntime,Nfreq)
 %
 % Inputs: 
-%     x,dopp_win_params,lag_win_params,Ntime,Nfreq - 
+%      x = input signal (either real-valued signal of length-N or
+%          complex-valued analytic signal of length-2N)
+%
+%      dopp_win_params = Doppler window parameters in cell form:
+%                 {win_length,win_type,win_param,Doppler_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] Doppler_or_not is either 1 (define window in the Doppler
+%                     domain, which is the default) or 0 (define window the time domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      lag_win_params = lag window parameters in cell form:
+%                 {win_length,win_type,win_param,lag_or_not} where
+%                     - win_length is the sample length of the window
+%                     - win_type is the type of window 
+%                     - [optional] win_param is the parameter of the window 
+%                     - [optional] lag_or_not is either 0 (define window in the lag
+%                     domain, which is the default) or 0 (define window the frequency domain)
+%                 e.g. {121, 'hamm'}; {121, 'tukey', 0.2}; {127,'cosh',0.01,0}
+%
+%      Nfreq = frequency oversampling value; must be greater than length of lag window
+%      Ntime = time oversampling value; must be greater than length of Doppler window
 %
 % Outputs: 
-%     tfd - 
+%      tfd = Ntime x Nfreq time-frequency distribution
+%
+% See also: DEC_SEP_GDTFD, GET_ANALYTIC_SIGNAL, GEN_LAG_KERN, GEN_DOPPLER_KERN, FFT
 %
 % Example:
-%     
+%      N=10000; Ntime=256; Nfreq=256;
+%      x=gen_LFM(N,0.1,0.3)+gen_LFM(N,0.4,0.1);
 %
+%      c=sep_gdtfd(x,{51,'hann'},{171,'hann'},Ntime,Nfreq); 
+%      vtfd(c,x);
+
 
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-05-03 02:03:24 (otoolej)>
+% last update: Time-stamp: <2014-07-23 15:25:11 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=sep_gdtfd(x,dopp_win_params,lag_win_params,Ntime,Nfreq)
 if(nargin<4 || isempty(Ntime)), Ntime=[]; end
 if(nargin<5 || isempty(Nfreq)), Nfreq=[]; end
 
 DBplot=0;
-DBmem=1;
+DBmem=0;
 DBcompare=0;
 DBtest=0;
-DBtime=1;
+DBtime=0;
 
 if(DBtime), time_start=tic; end
 %---------------------------------------------------------------------

@@ -40,7 +40,7 @@
 %  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 %  DAMAGE.
 %-------------------------------------------------------------------------------
-function vtfd(tfd,s1,FS)
+function vtfd(tfd,s1,FS,n,k)
 if(nargin<3 || isempty(FS)) 
   FS=1; 
 end
@@ -51,6 +51,10 @@ else
   TFD_ONLY=0; 
   Ntime=length(s1);
 end
+if(nargin<4 || isempty(n)), n=[]; end
+if(nargin<5 || isempty(k)), k=[]; end
+
+
 [N,M]=size(tfd);
 
 
@@ -71,18 +75,28 @@ TIME_FREQ_PLOTS_GAP=0.07;
 %---------------------------------------------------------------------
 % X/Y tick labels
 %---------------------------------------------------------------------
-ntime=1:Ntime; ntime=ntime./FS;
-n=linspace(ntime(1),ntime(end),N);
-Mh=ceil(M/2);
-k=linspace(0,0.5,Mh);
-Mh_time=ceil(Ntime/2);
-k_time=linspace(0,0.5,Mh_time);
-k=k.*FS;
+if(isempty(n))
+    ntime=1:Ntime; ntime=ntime./FS;
+    n=linspace(ntime(1),ntime(end),N);
+else
+    ntime=n;
+end
+Mh_time=ceil(Ntime/2);  Mh=ceil(M/2);
+if(isempty(k))
 
-
+    k=linspace(0,0.5,Mh);
+    k_time=linspace(0,0.5,Mh_time);
+    k=k.*FS;
+else
+    k_time=k;
+end
+% $$$ keyboard;
 
 if(TFD_ONLY)
-  imagesc(k,n,tfd); axis('xy');
+    imagesc(k,n,tfd); axis('xy');
+    
+    % seems to bug with Octave and gnuplot, so have to force square:
+    if(is_octave), axis('square');  end
   
 else
   %---------------------------------------------------------------------
@@ -93,7 +107,7 @@ else
   set(h_time,'position',[(X_AXIS_START-TIME_FREQ_PLOTS_WIDTH-TIME_FREQ_PLOTS_GAP) ...
                       Y_AXIS_START TIME_FREQ_PLOTS_WIDTH ...
                       Y_AXIS_HEIGHT]);
-  plot(s1,ntime); 
+  plot(s1,1:length(s1)); 
   axis('tight');
   grid('on');
   set(h_time,'xticklabel',[]); set(h_time,'yticklabel',[]);
@@ -107,7 +121,7 @@ else
   set(h_freq,'position',[X_AXIS_START (Y_AXIS_START- ...
                                        TIME_FREQ_PLOTS_WIDTH-TIME_FREQ_PLOTS_GAP) ...
                       X_AXIS_WIDTH TIME_FREQ_PLOTS_WIDTH]);
-  plot(k_time,abs(S1(1:Mh_time)).^2);
+  plot(1:Mh_time,abs(S1(1:Mh_time)).^2);
   grid('on');
   set(h_freq,'xticklabel',[]); set(h_freq,'yticklabel',[]);
 
@@ -120,4 +134,15 @@ else
                       Y_AXIS_HEIGHT]);
 
   imagesc(k,n,tfd); axis('xy');
+  
+  % seems to bug with Octave and gnuplot, so have to force square:
+  if(is_octave), axis('square');  end
 end
+
+
+function r = is_octave ()
+  persistent x;
+  if (isempty (x))
+    x = exist ('OCTAVE_VERSION', 'builtin');
+  end
+  r = x;

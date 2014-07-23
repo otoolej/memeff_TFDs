@@ -16,6 +16,8 @@
 % OUTPUT:
 %       win = window 
 %
+% See also: BARTLETT, HANNING, HAMMING, GAUSSWIN, TUKEYWIN, CIRCSHIFT, FFT
+%
 % EXAMPLE
 %      N=64; 
 %      win=get_window(N,'tukey',0.4,0,2*N); 
