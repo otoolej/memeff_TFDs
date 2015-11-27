@@ -230,7 +230,7 @@ John M. O' Toole
 Neonatal Brain Research Group,  
 Irish Centre for Fetal and Neonatal Translational Research (INFANT),  
 Department of Paediatrics and Child Health,  
-University College Dublin,  
+University College Cork,  
 Western Gateway Building, Room 2.17,  
 Cork, Ireland
 

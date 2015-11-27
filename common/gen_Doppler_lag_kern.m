@@ -48,7 +48,7 @@
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-07-23 13:02:20 (otoolej)>
+% last update: Time-stamp: <2014-09-15 14:11:07 (otoolej)>
 %-------------------------------------------------------------------------------
 function g=gen_Doppler_lag_kern(kern_type,kern_params,N,lag_index,G1)
 if(nargin<3), error('need 3 input arguments'); end
@@ -254,25 +254,42 @@ switch kernel_type
   %---------------------------------------------------------------------
   case { 'prod', 'RID', 'product' }
 
-    if(length(lag_index)==1)
-        m=lag_index;
-        
-        g(1)=1;
-        if(m==N)
-            g(:)=0;
-        else
-            if(m>ceil(N/2)) m=N-m; end
-            
-            u=1:floor(Nd/2);
-            im=mod(u*m,length(G1));
-            
-            g(u+1)=G1(im+1);
-            g(Nd-u+1)=g(u+1); 
-        end
-    else
-        
-        % TO DO:
-    end
+    % NOT WORKING:
+% $$$     if(length(lag_index)==1)
+% $$$         m=lag_index;
+% $$$         
+% $$$         g(1)=1;
+% $$$         if(m==N)
+% $$$             g(:)=0;
+% $$$         else
+% $$$             if(m>ceil(N/2)) m=N-m; end
+% $$$             
+% $$$             u=1:floor(Nd/2);
+% $$$             im=mod(u*m,length(G1));
+% $$$             
+% $$$             g(u+1)=G1(im+1);
+% $$$             g(Nd-u+1)=g(u+1); 
+% $$$         end
+% $$$     else
+% $$$         keyboard;
+% $$$         if(isempty(G1))
+% $$$             [d,d2,d3,G1]=gen_Doppler_kern(kernel_params,N,N);
+% $$$         end
+% $$$         Ndh=ceil(Nd/2);  Nlh=ceil(Nl/2);
+% $$$         g=zeros(Nd,Nl);
+% $$$ 
+% $$$         g(1,1:Nl)=G1(1); g(1:Nd,1)=G1(1);  
+% $$$ 
+% $$$         u=1:Ndh-1;
+% $$$         for m=1:Nlh-1
+% $$$             g(u+1,m+1)=G1( mod(u.*m,N)+1 );
+% $$$             
+% $$$ % $$$             g(Nd-u+1,m+1)=g(u+1,m+1); 
+% $$$ % $$$             g(u+1,Nl-m+1)=g(u+1,m+1); 
+% $$$ % $$$             g(Nd-u+1,Nl-m+1)=g(u+1,m+1); 
+% $$$         end
+% $$$         
+% $$$     end
     
    
   %---------------------------------------------------------------------

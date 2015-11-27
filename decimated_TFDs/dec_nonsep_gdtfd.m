@@ -50,7 +50,7 @@
 % John M. O' Toole, University College Cork
 % Started: 23-04-2014
 %
-% last update: Time-stamp: <2014-07-23 15:25:45 (otoolej)>
+% last update: Time-stamp: <2014-09-15 13:19:16 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=dec_nonsep_gdtfd(x,kern_type,kern_params,time_dec,freq_dec)
 if(nargin<2 || isempty(kern_type)),   kern_type='cw'; end
@@ -71,6 +71,9 @@ if(DBtime), time_start=tic; end
 % 1. convert real-valued signal to analytic signal of length 2N
 %---------------------------------------------------------------------
 [z,N2,N,Nh]=get_analytic_signal(x);
+
+% if product-kernel then generate window now:
+G1=get_prod_kernel(kern_type,kern_params,N);
 
 
 %---------------------------------------------------------------------
@@ -204,4 +207,23 @@ if(DBplot)
     Z=fft(z);
     subplot(211); hold all; plot(sum(tfd)); plot( abs(Z(1:N)).^2./(2*N) );
     subplot(212); hold all; plot(sum(tfd)' - abs(Z(k_seq+1)).^2./(2*N) );    
+end
+
+
+
+function G1=get_prod_kernel(tfd_type,tfd_params,N)
+%---------------------------------------------------------------------
+% Generate window for product-kernel
+%---------------------------------------------------------------------
+
+if( strcmp(tfd_type,'RID')==1 || strcmp(tfd_type,'prod')==1 || ...
+    strcmp(tfd_type,'product')==1 )
+    
+% $$$     % oversample the window:
+% $$$     L_dopp=N*N2;
+    
+    G1=gen_Doppler_kern(tfd_params,N);
+    G1=real(G1);
+else
+    G1=[];
 end
