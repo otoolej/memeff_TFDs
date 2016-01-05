@@ -170,8 +170,10 @@ newer, [Octave website](http://www.gnu.org/software/octave/index.html), with the
 
 # test computer setup
 - hardware:  Intel(R) Xeon(R) CPU E5-1603 0 @ 2.80GHz; 8GB memory.
-- operating system: Ubuntu GNU/Linux x86_64 distribution (Trusty Tahr, 14.04), with Linux kernel 3.13.0-27-generic
-- software: Octave 3.8.1 (using Gnuplot 4.6 patchlevel 4), with 'octave-signal' toolbox and Matlab (R2009b, R2012a, and R2013a)
+- operating system: Ubuntu GNU/Linux x86_64 distribution (Trusty Tahr, 14.04), with Linux
+  kernel 3.13.0-27-generic
+- software: Octave 3.8.1 (using Gnuplot 4.6 patchlevel 4), with 'octave-signal' toolbox
+  and Matlab (R2009b, R2012a, and R2013a)
 
 ---
 
@@ -210,15 +212,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # references
 
-1. J.M. O' Toole and B. Boashash, “Memory Efficient Algorithms for TFDs”, Article 6.6, Chapter 6, in Time–Frequency Signal Processing and Analysis: A Comprenhensive Reference, Second Edition, 2014, in press.
+1. J.M. O' Toole and B. Boashash, “Memory Efficient Algorithms for Quadratic TFDs”,
+   Chapter 6.6; in Time–Frequency Signal Processing and Analysis: A
+   Comprenhensive Reference, Second Edition, Academic Press, pp. 374–385, 2016 (ISBN: 9780123984999).
 
-2. J.M. O' Toole and B. Boashash, "Fast and memory-efficient algorithms for computing quadratic time–frequency distributions", Applied and Computational Harmonic Analysis, vol. 35, no. 2, pp. 350–358, 2013.
+2. J.M. O' Toole and B. Boashash, "Fast and memory-efficient algorithms for computing
+   quadratic time–frequency distributions", Applied and Computational Harmonic Analysis,
+   vol. 35, no. 2, pp. 350–358, 2013.
 
-3. J.M. Oʼ Toole, M. Mesbah, and B. Boashash, “Improved discrete definition of quadratic time–frequency distributions,” IEEE Transactions on Signal Processing, vol. 58, Feb. 2010, pp. 906-911.
+3. J.M. Oʼ Toole, M. Mesbah, and B. Boashash, “Improved discrete definition of quadratic
+   time–frequency distributions,” IEEE Transactions on Signal Processing, vol. 58,
+   Feb. 2010, pp. 906-911.
 
-4. J.M. O' Toole, M. Mesbah, and B. Boashash, "A New Discrete Analytic Signal for Reducing Aliasing in the Discrete Wigner-Ville Distribution", IEEE Transactions on Signal Processing, vol. 56, no. 11, pp. 5427-5434, Nov. 2008.
+4. J.M. O' Toole, M. Mesbah, and B. Boashash, "A New Discrete Analytic Signal for Reducing
+   Aliasing in the Discrete Wigner-Ville Distribution", IEEE Transactions on Signal
+   Processing, vol. 56, no. 11, pp. 5427-5434, Nov. 2008.
 
-5. J.M. Oʼ Toole, M. Mesbah, and B. Boashash, “Algorithms for discrete quadratic time–frequency distributions,” WSEAS Transactions on Signal Processing, vol. 4, May. 2008, pp. 320-329.
+5. J.M. Oʼ Toole, M. Mesbah, and B. Boashash, “Algorithms for discrete quadratic
+   time–frequency distributions,” WSEAS Transactions on Signal Processing, vol. 4,
+   May. 2008, pp. 320-329.
 
 
 ---
@@ -234,5 +246,5 @@ University College Cork,
 Western Gateway Building, Room 2.17,  
 Cork, Ireland
 
-- email: j.otoole <AT> ieee.org
+- email: j.otoole -AT- ieee.org
 - web: http://otoolej.github.io/
