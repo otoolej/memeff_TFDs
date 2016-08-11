@@ -40,7 +40,7 @@
 %  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 %  DAMAGE.
 %-------------------------------------------------------------------------------
-function vtfd(tfd,s1,FS,n,k)
+function [h_image,h_time,h_freq]=vtfd(tfd,s1,FS,n,k)
 if(nargin<3 || isempty(FS)) 
   FS=1; 
 end

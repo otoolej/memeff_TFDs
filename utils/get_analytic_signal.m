@@ -25,11 +25,25 @@
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-05-06 15:01:29 (otoolej)>
+% last update: Time-stamp: <2016-08-11 17:18:41 (otoolej)>
 %-------------------------------------------------------------------------------
 function [z,N2,N,Nh]=get_analytic_signal(z)
+if(rem(length(z),2))
+    warn_str=sprintf(['odd-length signal.\nCurrently, code works for even-length signal ' ...
+                      'only.\n\nRemoving last sample of the signal to force to ' ...
+                     'even-length.\n']);
+    warning(warn_str);
+    z=z(1:(end-1));
+end
+
+
 if(isreal(z)) 
   z=gen_analytic(z); 
+else
+    warn_str=sprintf(['using complex-valued signal; assuming this is an analytic signal ' ...
+                      'zero-padded to length-2N?\n\n If unsure, input the real part ' ...
+                     'of signal only, i.e. real(x)\n'] );
+    warning(warn_str);
 end
 N2=length(z); N=N2/2; Nh=ceil(N/2);
 
