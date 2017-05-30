@@ -56,11 +56,11 @@ examples, using a test signal, illustrates usage:
   figure(2); clf; vtfd(tf,x);
   
   % Doppler-independent kernel:
-  tf=full_tfd(x,'DI',{101,'hann'},256,[]);
+  tf=full_tfd(x,'DI',{101,'hann'},[],256);
   figure(3); clf; vtfd(tf,x);
   
   % lag-independent kernel:
-  tf=full_tfd(x,'LI',{51,'hann'},[],256);
+  tf=full_tfd(x,'LI',{51,'hann'},256,[]);
   figure(4); clf; vtfd(tf,x);
 ```
 ![Examples of oversampled TFDs](pics/full_TFDs_examples.png)

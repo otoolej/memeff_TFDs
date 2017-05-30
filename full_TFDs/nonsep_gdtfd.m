@@ -47,7 +47,7 @@
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-07-23 15:25:04 (otoolej)>
+% last update: Time-stamp: <2016-08-25 17:39:48 (otoolej)>
 %-------------------------------------------------------------------------------
 function tfd=nonsep_gdtfd(x,kern_type,kern_params)
 if(nargin<2 || isempty(kern_type)), kern_type='cw'; end
@@ -95,6 +95,20 @@ end
 
 
 if(DBmem), s=whos; fprintf('K: mem=%s\n',disp_bytes(sum([s.bytes]))); end
+
+% $$$ if(strcmp(kern_type,'wvd'))
+% $$$     for n=0:2:N-2
+% $$$     
+% $$$         tfd_time_slice=fft( R_tslice_even+j.*R_tslice_odd );
+% $$$ 
+% $$$         tfd(n+1,:)=real(tfd_time_slice);
+% $$$         tfd(n+2,:)=imag(tfd_time_slice);
+% $$$     end
+% $$$     
+% $$$     
+% $$$     dispVars('here');
+% $$$     return;
+% $$$ end
 
 
 %-------------------------------------------------------------------------

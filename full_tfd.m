@@ -67,7 +67,7 @@
 % John M. O' Toole, University College Cork
 % Started: 11-06-2014
 %
-% last update: Time-stamp: <2014-07-23 16:29:01 (otoolej)>
+% last update: Time-stamp: <2017-05-30 10:00:46 (otoolej)>
 %-------------------------------------------------------------------------------
 function tf=full_tfd(x,kern_type,kern_params,Ntime,Nfreq)
 if(nargin<2 || isempty(kern_type)), kern_type='sep'; end
@@ -133,7 +133,7 @@ switch kern_type
                '{win_length,win_name}']);
     end
 
-    tf=li_gdtfd(x,kern_params,Nfreq);
+    tf=li_gdtfd(x,kern_params,Ntime);
     
   otherwise
     warning('kern_type should be either: nonsep, sep, DI, or LI');
