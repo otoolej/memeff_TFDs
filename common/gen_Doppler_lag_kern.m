@@ -48,7 +48,7 @@
 % John M. O' Toole, University College Cork
 % Started: 14-04-2014
 %
-% last update: Time-stamp: <2014-09-15 14:11:07 (otoolej)>
+% last update: Time-stamp: <2018-01-21 04:51:27 (otoolej)>
 %-------------------------------------------------------------------------------
 function g=gen_Doppler_lag_kern(kern_type,kern_params,N,lag_index,G1)
 if(nargin<3), error('need 3 input arguments'); end
@@ -299,8 +299,13 @@ switch kernel_type
   %---------------------------------------------------------------------
  case { 'mb', 'modified-b' }
 
-  g=get_kern(g,get_index,'swvd',kernel_params,doppler_sample_rate,lag_sample_rate,N);   
-    
+  G1=get_kern(g,lag_index,'swvd',{N-1,'cosh',kernel_params{1}}, ...
+                doppler_sample_rate,lag_sample_rate,N);   
+
+  for m=1:Nl
+      g(:,m) = G1;
+  end
+
   
  otherwise
   error(['Unknown kernel type: ' kernel_type]);

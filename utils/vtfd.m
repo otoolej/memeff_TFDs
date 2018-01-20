@@ -122,6 +122,7 @@ else
                                        TIME_FREQ_PLOTS_WIDTH-TIME_FREQ_PLOTS_GAP) ...
                       X_AXIS_WIDTH TIME_FREQ_PLOTS_WIDTH]);
   plot(1:Mh_time,abs(S1(1:Mh_time)).^2);
+  axis('tight');
   grid('on');
   set(h_freq,'xticklabel',[]); set(h_freq,'yticklabel',[]);
 
