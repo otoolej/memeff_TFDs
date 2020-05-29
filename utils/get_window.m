@@ -7,7 +7,7 @@
 % INPUT:
 %       win_length = length of window
 %       win_type   = type of window: { 'delta' | 'rect' | 'bart' | 'hamm'
-%                    | 'hann' | 'tukey' | 'gauss' | 'cosh' }
+%                    | 'hann' | 'tukey' | 'gauss' | 'cosh' | 'blackmanharris' }
 %       win_param  = (optional) window parameter.
 %       DFT_WINDOW = (optional) parameter { 0 | 1 }. 
 %                     If 1 returns DFT of window. 
@@ -89,15 +89,16 @@ switch win_type
   win_hlf = fix( win_length / 2);
 
   if(isempty(win_param))
-    win_param = 0.01;
+      win_param = 0.01;
   end
   for m = -win_hlf:win_hlf
-    win(mod(m,win_length)+1) = cosh( m ).^( -2 * win_param );
+      win(mod(m,win_length)+1) = cosh( m ).^( -2 * win_param );
   end
   win = fftshift(win);
+  case {'blackmanharris', 'bmh'}  
+    win = blackmanharris(win_length, 'symmetric');
   
-  
- otherwise
+  otherwise
   error(['Unknown window type ' win_type]);
 end
   

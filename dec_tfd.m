@@ -76,7 +76,7 @@
 % John M. O' Toole, University College Cork
 % Started: 23-07-2014
 %
-% last update: Time-stamp: <2014-07-23 16:28:41 (otoolej)>
+% last update: Time-stamp: <2019-06-05 17:05:19 (otoolej)>
 %-------------------------------------------------------------------------------
 function tf=dec_tfd(x,kern_type,kern_params,Ntime,Nfreq,time_dec,freq_dec)
 if(nargin<2 || isempty(kern_type)), kern_type='sep'; end
@@ -88,7 +88,7 @@ if(nargin<7 || isempty(Nfreq)), Nfreq=[]; end
 
 
 % set to 1 if want to see how much memory is used:
-DBmem=1;
+DBmem=0;
 
 
 kern_type=lower(kern_type);
