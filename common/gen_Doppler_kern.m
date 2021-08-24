@@ -34,7 +34,7 @@
 % John M. O' Toole, University College Cork
 % Started: 16-04-2014
 %
-% last update: Time-stamp: <2014-07-23 13:01:48 (otoolej)>
+% last update: Time-stamp: <2021-08-24 17:42:57 (otoolej)>
 %-------------------------------------------------------------------------------
 function [G1,Q,Ntime,G1_pad]=gen_Doppler_kern(win_params,N,Ntime)
 if(nargin<3 || isempty(Ntime)), Ntime=[]; end
@@ -83,7 +83,7 @@ end
 % 2. call function to generate window
 %---------------------------------------------------------------------
 win_type=win_params{2}; 
-if( l>=3 ) win_extra_param=win_params{3}; else, win_extra_param=0; end
+if( l>=3 ) win_extra_param=win_params{3}; else, win_extra_param=[]; end
 if( l>3 )  win_dft_param=win_params{4}; else, win_dft_param=1; end
 
 
@@ -135,3 +135,8 @@ end
 
 
 
+function w=shiftWin(w)
+%---------------------------------------------------------------------
+% shift window to centre
+%---------------------------------------------------------------------
+w=circshift(w(:),ceil(length(w)/2));

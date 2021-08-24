@@ -240,11 +240,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 John M. O' Toole
 
 Neonatal Brain Research Group,  
-Irish Centre for Fetal and Neonatal Translational Research (INFANT),  
+Irish Centre for Maternal and Child Health Research [(INFANT)](https://www.infantcentre.ie/),  
 Department of Paediatrics and Child Health,  
+Cork University Hospital,
 University College Cork,  
-Western Gateway Building, Room 2.17,  
-Cork, Ireland
+Ireland
 
-- email: j.otoole -AT- ieee.org
-- web: http://otoolej.github.io/
+- email: jotoole -AT- ucc DOT ie
+

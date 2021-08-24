@@ -13,6 +13,11 @@ in the git logs.
 ### Fixed
 - input argument (Ntime) when calling LI kernel from full_tfd.m (was incorrectly passing
   Nfreq)
+- bug fix in `gen_lag_kern.m` and `gen_Doppler_kern.m` for windows `gauss`, `cosh`, `tukey` as
+default value was 0; now use Matlab will use default value
+- missing `shiftWin` function (centres window) in `gen_lag_kern.m` and
+`gen_Doppler_kern.m` (only used if 5 parameters in window cell); now added
 ### Added
 - this CHANGELOG.md!
+- windows: `blackmanharris`, `chebwin`, and `nuttall` (in `get_window.m`)
 

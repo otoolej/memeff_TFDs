@@ -97,6 +97,10 @@ switch win_type
   win = fftshift(win);
   case {'blackmanharris', 'bmh'}  
     win = blackmanharris(win_length, 'symmetric');
+  case {'nuttall'}  
+    win = nuttallwin(win_length, 'symmetric');
+  case {'dolph', 'chebwin'}
+    win = chebwin(win_length, win_param);
   
   otherwise
   error(['Unknown window type ' win_type]);
