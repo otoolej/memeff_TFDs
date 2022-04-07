@@ -1,6 +1,7 @@
 # Fast and Memory-Efficient Algorithms for Quadratic Time–Frequency Distributions
 
-A collection of M-files to compute time–frequency distributions from the quadratic class [[1]](#references). Memory and computational load is limited by controlling the level of over-sampling for the TFD. Oversampling in the TFD is proportional to signal length and bandwidth of the Doppler–lag kernel. Algorithms are optimised to four kernel types: nonseparable, separable, lag-independent, and Doppler-independent kernels.  
+A collection of M-files to compute time–frequency distributions from the quadratic class
+[[1] and [2]](#references). Memory and computational load is limited by controlling the level of over-sampling for the TFD. Oversampling in the TFD is proportional to signal length and bandwidth of the Doppler–lag kernel. Algorithms are optimised to four kernel types: nonseparable, separable, lag-independent, and Doppler-independent kernels.  
 
 Also included are algorithms to compute decimated, or sub-sampled, TFDs. Again, these
 algorithms are specific to the four kernel types but compute approximate TFDs by a process
